@@ -1,0 +1,254 @@
+<html>
+    <head>
+        <title>Dynamixel Checker</title>
+        <script src = "https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script type = "text/javascript" src = "/socket.io/socket.io.js"></script>
+        <script type = "text/javascript" src = "jquery.csv.js"></script>
+        <script type = "text/javascript">
+
+            // 接続
+            var socket = io.connect('http://localhost:8080');
+
+            function SendCommand(str,command,data){
+                socket.emit("command", {
+                    id : str,
+                    value : command,
+                    deg : data
+                });
+            };
+
+            function ReadCommand(str,command,addr,len){
+                socket.emit("command", {
+                    id : str,
+                    value : command,
+                    addr : addr,
+                    leng : len
+                });
+            };
+
+            function WriteCommand(str,command,addr,len,data){
+                socket.emit("command", {
+                    id : str,
+                    value : command,
+                    addr : addr,
+                    leng : len,
+                    deg : data
+                });
+            };
+
+            function servoON(){
+                var str = $('[id=list]').val();
+                SendCommand(str,"on", "1");
+            }
+            function servoOFF(){
+                var str = $('[id=list]').val();
+                SendCommand(str,"off", "0");
+            }
+            function setPOSE(val){
+                var str = $('[id=list]').val();
+                SendCommand(str,"set",val);
+            }
+            function setOFFSET(){
+                var str = $('[id=list]').val();
+                SendCommand(str,"zero","0");
+            }
+            function getPOSE(){
+                console.log("getPose");
+                var str = $('[id=list]').val();
+                //SendCommand(str,"get",val);
+                var addr = $('[name=item]').val();
+                var len = 1;
+                ReadCommand(str,"get",addr,len);
+
+                socket.on("read",function(data){
+                    console.log(data.val);
+                    document.getElementById("guest").innerText = data.val;
+                });
+            }
+            function WRITE(){
+                var str = $('[id=list]').val();
+                var val = $('[id=text]').val();
+                var addr = $('[name=item]').val();
+                var len = 1;
+                console.log('addr:'+ str + ' input:' + val);
+                WriteCommand(str,"write",addr,len,val);
+            }
+            function SET(){
+                var addr = $(this).parents('tr').attr('id');
+                var str = $('[id=list]').val();
+                var val = $(this).parents('tr').find('input').val();
+                var len = $(this).parents('tr').attr('value');
+                console.log('addr:' +addr +' id:'+str+ ' input:'+val+ ' len:'+len);
+                if(val)
+                    WriteCommand(str,"write",addr,len,val);
+            }
+            function setRate(){
+                var str = $('[id=rate]').val();
+                SendCommand(str,"rate",0);
+            }
+            function PING(){
+                var str = 254;
+                var rate = $('[id=rate]').val();
+                SendCommand(str,"ping",rate);
+
+                socket.on("search",function(data){
+                    console.log("ping");
+                    console.log("data.length:"+ data.val.length);
+                    document.getElementById("list").innerHTML = "";
+                    for(var i=0;i<data.val.length;i++){
+                        let op = document.createElement("option");
+                        op.value = data.val[i];  //value値
+                        console.log("id:" + op.value);
+                        op.text = data.val[i];   //テキスト値
+                        document.getElementById("list").appendChild(op);
+                    }
+                });
+            }
+
+			function ALLinput(){
+				console.log("all input!!");
+                var no = $('#csv tbody').children().length;
+                for(var i=0; i < no; i++){
+                    var addr = $('#csv tbody').children('tr:eq('+i+')').attr('id');
+                    var str = $('[id=list]').val();
+                    var val = $('#csv tbody').children('tr:eq('+i+')').find('input').val();
+                    var len = $('#csv tbody').children('tr:eq('+i+')').attr('value');
+                    if(val){
+                        console.log('no:'+i+' addr:' +addr +' id:'+str+ ' input:'+val+ ' len:'+len);
+                        WriteCommand(str,"write",addr,len,val);
+                    }
+                }
+			}
+
+			function ALLread(i){
+                var no = $('#csv tbody').children().length;
+
+                if(i == no)return;
+                var addr = $('#csv tbody').children('tr:eq('+i+')').attr('id');
+                var str = $('[id=list]').val();
+                var len = $('#csv tbody').children('tr:eq('+i+')').attr('value');
+                console.log('no:'+i+' addr:' +addr +' id:'+str+' len:'+len);
+                ReadCommand(str,"get",addr,len);
+                
+                socket.once("read",function(data){
+                    console.log("ALLread");
+                    var table = document.getElementById("csv");
+                    console.log(data.val);
+                    table.rows[i+1].cells[3].innerText = data.val;
+                    });
+
+                setTimeout(function(){
+                    ALLread(i+1);
+                },50);
+            }
+
+            $(function(){
+                $('[id=search]').click(PING);
+                $('[id=on]').click(servoON);
+                $('[id=off]').click(servoOFF);
+                $('[id=zero]').click(setOFFSET);
+                $('[id=get]').click(getPOSE);
+                $('[id=write]').click(WRITE);
+                $('[id=setrate]').click(setRate);
+                $('table#csv').on('click','[id=set]',SET);
+                $('table#csv').on('click','[id=all]',ALLinput);
+                $('table#csv').on('click','[id=allread]',function(){ALLread(0);});
+                $('input[type=range]').on('input', function(){
+                    var val = $(this).val();
+                    setPOSE(val);
+                });
+                $('input[type=range]').change( function(){
+                    var val = $(this).val();
+                    setPOSE(val);
+                });
+            });
+        </script>
+        <script type="text/javascript">
+        $(function() {
+                var target = '#csv';
+                var csvList;
+                var insert = '';
+                $.get('./Control_table.csv',function(data){
+
+                    // csvを配列に格納
+                    csvList = $.csv()(data);
+                    console.log(csvList);
+
+                    // 挿入するHTMLを作成
+                    insert += '<thead>'
+                    insert += '<tr>';
+                    insert += '<th>'+csvList[0][0]+'</th>'; //Address
+                    //insert += '<th>'+csvList[0][1]+'</th>'; //size(Byte)
+                    insert += '<th>'+csvList[0][2]+'</th>'; //Date Name
+                    insert += '<th>'+csvList[0][3]+'</th>'; //Description
+                    //insert += '<th>'+csvList[0][4]+'</th>'; //Access
+                    //insert += '<th>'+csvList[0][5]+'</th>'; //Inintial value
+                    insert += '<th><button id="allread">current data</button></th>';
+                    insert += '<th>set number</th>';
+                    insert += '<th><button id="all">all input</button></th>';
+                    insert += '</tr>';
+                    insert += '</thead>'
+
+                        insert += '<tbody>'
+                    for (var i = 1; i < csvList.length-1; i++) {
+                        insert += '<tr class="addr" id="' + csvList[i][0] + '" value="'+ csvList[i][1] +'">';
+                        insert += '<td>' + csvList[i][0] + '</td>';
+                        insert += '<td>' + csvList[i][2] + '</td>';
+                        insert += '<td>' + csvList[i][3] + '</td>';
+                        if(csvList[i][4] != "RW"){
+                            insert += '<td bgcolor="#A9A9A9"> current </td>';
+                        }else{
+                            insert += '<td> 0 </td>';
+                            insert += '<td><input type="text" size="6"></td>';
+                            insert += '<td><button id="set">set</td>';
+                        }
+                        insert += '</tr>';
+                    };
+                    insert += '</tbody>';
+                        $(target).append(insert);
+                    });
+        });
+        </script>
+    </head>
+    <body>
+        <h1>Dynamixel protocol2.0</html>
+        <p> Baudrate:
+            <select id="rate">
+            <option value="9600">0:9600</option>
+            <option value="57600">1:57600</option>
+            <option value="115200">2:115200</option>
+            <option value="1000000">3:1000000</option>
+            <option value="2000000">4:2000000</option>
+            <option value="3000000">5:3000000</option>
+            <option value="4000000">6:4000000</option>
+            <option value="4500000">7:4500000</option>
+            </select>
+        </p>
+        <p> ID:
+            <select id="list">
+            </select>
+            <button id="search">search ID</button>
+        </p>
+        <p>
+            Torque:
+            <button id="on">on</button>
+            <button id="off">off</button>
+        </p>
+        <p>
+        Change Position:
+            <input type="range" name="range" min="-256" max="256" step="1" onchange="changeValue(this.value)">
+                <span id="val">0</span>
+                    <script type="text/javascript">
+                        function changeValue(value) {
+                        document.getElementById("val").innerHTML = value;
+                    }
+                    </script> 
+        </p>
+        <p>
+            Reference Position: <button id="zero">Move</button>
+        </p>
+        <p>
+        <table id="csv" class="csv" border="1"></table>
+        </p>
+    </body>
+</html>
