@@ -53,16 +53,18 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
    ![screenshot from 2018-07-20 17-28-41](https://user-images.githubusercontent.com/12367951/42992244-f39f4cee-8c42-11e8-8929-bc0b1d83ccca.png)
 
 ## 使用方法
- ### サーボ接続
- 1. baudrateの設定
+ ### サーボ接続方法
+ 1. baudrateの設定    
   baudrateのselectboxから所望のrateを選択します。
- 1. USB接続
+ 1. USB接続    
   USBポートにU2D2などの変換を接続、サーボの電源も入れてください。
- 1. search ID
+ 1. search ID   
   search IDボタンを押すと現在つながっているサーボのIDを一覧で取得します。
- 1. ID選択
+ 1. ID選択   
   IDのselectboxで書き換えをしたいサーボのIDを選択してください。
- 
+  ## 注意事項
+   ### baudrate,IDの書き換えを行った場合、USBを抜いてからサーボ接続方法をもう一度行ってください
+  
  ### 各種操作説明
  operating Modeによって、挙動が変わります。[Dynamixelのマニュアル](http://www.besttechnology.co.jp/modules/knowledge/?Dynamixel%20XM430-W350)を確認してください。
  ### ・Torque on/off
