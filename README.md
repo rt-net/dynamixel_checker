@@ -13,7 +13,7 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
    本プログラムは[Node.js](https://nodejs.org/ja/)を使用している  
 
    - Node.js: 8.11.3 LTS
-    [node-v8.11.3 sourc](https://nodejs.org/dist/v8.11.3/node-v8.11.3.tar.gz)でソースからインストール
+    [node-v8.11.3 sourc](https://nodejs.org/dist/v8.11.3/node-v8.11.3.tar.gz)からインストール
    ``` 
    $ tar xzf node-v8.11.3.tar.gz
    $ cd node-v8.11.3
