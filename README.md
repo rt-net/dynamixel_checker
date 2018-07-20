@@ -1,15 +1,15 @@
 # dynamixel_checker
 ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
 
-### 参考資料
+## 参考資料
  * [ROBOTIS-GIT/Dynamixel SDK](https://github.com/ROBOTIS-GIT/DynamixelSDK)
  * [Dynamixel XM430-W350 マニュアル](http://www.besttechnology.co.jp/modules/knowledge/?Dynamixel%20XM430-W350)
 
-### 動作環境
+## 開発環境
  - OS:Linux ubuntu16.04 64bit
  - ブラウザ:firefox 61.0.1 64bit
  
-### nodeのインストール
+## nodeのインストール
    本プログラムは[Node.js](https://nodejs.org/ja/)を使用している  
 
    - Node.js: 8.11.3 LTS
@@ -21,13 +21,15 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
    $ make
    $ sudo make install 
    ```
+   その他インストール方法もありますが、ここでは説明を省きます。
 
-### コンパイル手順 
+## パッケージのインストール
+   ### dynamixel_checkerリポジトリのclone
    ```
    $ git clone https://github.com/rt-net/dynamixel_checker.git 
-   $ cd dynamixel_checker
+   $ cd dynamixel_checker/src
    ```
-   ## npmパッケージのインストール
+   ### npmパッケージのインストール
    - serialport
    - socket.io
    - express
@@ -36,7 +38,15 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
    $ npm install -g
    ```
    
-### 使用方法
+## 使用方法
+ ### プログラムの実行
+   ```
+   $ node server.js 
+   ```
+   * Webサーバに接続
+   ブラウザを開いて [http://localhost:8080/] にアクセスするとDynamixel Checkerが起動する。
+   
+ ### デバイスが認識しない場合 
    * デバイスが認識しているか確認をする
    ```
    $ ls /dev/ttyUSB*  
@@ -46,12 +56,6 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
    ```
    $ sudo chmod a+rw /dev/ttyUSB0 
    ```
-   * プログラムの実行
-   ```
-   $ node server.js 
-   ```
-   * Webサーバに接続
-   ブラウザを開いて [http://localhost:8080/] にアクセスするとDynamixel Checkerが起動する。
 ## License
 
 This repository is licensed under the Apache License Version 2.0, see [LICENSE](./LICENSE).
