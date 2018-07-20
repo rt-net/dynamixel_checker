@@ -1,0 +1,24 @@
+{
+  "name": "dynamixel_checker",
+  "version": "0.0.0",
+  "description": "",
+  "main": "jquery.csv.js",
+  "dependencies": {
+    "async": "^2.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rt-net/dynamixel_checker.git"
+  },
+  "author": "https://github.com/RikiHayashi",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/rt-net/dynamixel_checker/issues"
+  },
+  "homepage": "https://github.com/rt-net/dynamixel_checker#readme"
+}
