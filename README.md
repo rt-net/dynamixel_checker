@@ -30,22 +30,27 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
    $ cd dynamixel_checker/src
    ```
    ### npmパッケージのインストール
+   本プログラムで使用するnpmパッケージをインストールする。
+   以下が、パッケージの種類
    - serialport
    - socket.io
    - express
    - async
+   
    ```
    $ npm install -g
    ```
+   コマンドを実行することで、必要なパッケージをインストールできる。
    
-## 使用方法
+## 起動方法
  ### プログラムの実行
    ```
    $ node server.js 
    ```
-   * Webサーバに接続
+ ### Webサーバに接続
    ブラウザを開いて [http://localhost:8080/] にアクセスするとDynamixel Checkerが起動する。
-   
+   ![screenshot from 2018-07-20 17-28-41](https://user-images.githubusercontent.com/12367951/42992244-f39f4cee-8c42-11e8-8929-bc0b1d83ccca.png)
+
  ### デバイスが認識しない場合 
    * デバイスが認識しているか確認をする
    ```
