@@ -1,0 +1,2 @@
+# dynamixel_checker
+ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
