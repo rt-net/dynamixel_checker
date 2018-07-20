@@ -105,8 +105,8 @@
                 });
             }
 
-			function ALLinput(){
-				console.log("all input!!");
+            function ALLinput(){
+                console.log("all input!!");
                 var no = $('#csv tbody').children().length;
                 for(var i=0; i < no; i++){
                     var addr = $('#csv tbody').children('tr:eq('+i+')').attr('id');
@@ -118,9 +118,9 @@
                         WriteCommand(str,"write",addr,len,val);
                     }
                 }
-			}
+            }
 
-			function ALLread(i){
+            function ALLread(i){
                 var no = $('#csv tbody').children().length;
 
                 if(i == no)return;

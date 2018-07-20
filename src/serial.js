@@ -149,7 +149,7 @@ exports.writeTxPacket = function(ID, address, length, val){
     var total_packet = 12 + length;
     var txpacket = Buffer(total_packet);
     var data = Buffer(length);
-	console.log(val);
+    console.log(val);
     switch(length){
         case 1:
             data[0] = val;
@@ -222,7 +222,7 @@ exports.readRxPacket = function(ID, address, length, callback){
 exports.rxPacket = function(length, callback)
 {
     console.log('read');
-port.once('data', function(input){
+    port.once('data', function(input){
         var inputdata = Buffer(input);
         var dpacket = inputdata.length;
         console.log('input:' + inputdata.toString('hex'));
