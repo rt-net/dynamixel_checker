@@ -1,8 +1,4 @@
 var SerialPort = require('serialport');
-var dev = '/dev/ttyUSB0';
-var port = SerialPort(dev, {
-    baudRate:3000000
-});
 
 exports.setbaudRate = function(val){
     dev='/dev/ttyUSB0';
