@@ -38,14 +38,14 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
    - async
    
    ```
-   $ npm install -g
+   $ sudo npm install -g --unsafe-perm --build-from-source
    ```
    コマンドを実行することで、必要なパッケージをインストールできる。
    
 ## 起動方法
  ### プログラムの実行
    ```
-   $ node server.js 
+   $ npm start 
    ```
  ### Webサーバに接続
    ブラウザを開いて [http://localhost:8080/] にアクセスするとDynamixel Checkerが起動する。
