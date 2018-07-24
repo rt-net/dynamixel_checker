@@ -1,7 +1,6 @@
 {
   "name": "dynamixel_checker",
   "version": "1.0.0",
-  "description": "",
   "main": "jquery.csv.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,9 +18,10 @@
   "homepage": "https://github.com/rt-net/dynamixel_checker#readme",
   "dependencies": {
     "async": "^2.6.1",
-    "callback": "0.0.1",
     "express": "^4.16.3",
-    "serialport": "^6.2.1",
+    "serialport": "^6.2.2",
     "socket.io": "^2.1.1"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
