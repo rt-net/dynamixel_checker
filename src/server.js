@@ -7,6 +7,7 @@ var async = require('async');
 var serial = require('./serial.js');
 
 var io = require('socket.io')(http);
+var flag = 0;
 
 app.use(express.static(__dirname));
 
@@ -60,15 +61,32 @@ io.on('connection', function(socket){
                 serial.writeTxPacket(data.id, data.addr, Number(data.leng), Number(data.deg));
                 break;
             case "ping":
-            serial.setbaudRate(Number(data.deg));
-            setTimeout(function(){
+                if(flag == 0)
+                    serial.setbaudRate(Number(data.deg));
+                flag = 1;
+/*            setTimeout(function(){
                 console.log("ping");
                 serial.pingPacket(data.id);
                 serial.rxPacket(0, function(result){
                     data = result;
                     socket.emit("search",{val:data});
                 });
-            },2000);
+            },2000);*/
+                var data;
+                async.series([
+                    function(callback){
+                        serial.pingPacket(data.id);
+                        callback(null);
+                    },
+                    function(callback){
+                        serial.rxPacket(0, function(result){
+                        data = result;
+                        socket.emit("search",{val:data});
+                        });
+                    callback(null);
+                    }],function(result){
+                console.log("ping");
+                });
                 break;
             case "all":
                 var buf = new Buffer(1);

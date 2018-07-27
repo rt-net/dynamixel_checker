@@ -86,23 +86,31 @@
                 var str = $('[id=rate]').val();
                 SendCommand(str,"rate",0);
             }
-            function PING(){
-                var str = 254;
+            function PING(j){
+                var servo_num = 21;
                 var rate = $('[id=rate]').val();
-                SendCommand(str,"ping",rate);
-
-                socket.on("search",function(data){
+                SendCommand(j,"ping",rate);
+                if(j==servo_num){
+                    return;
+                }else if(j==1){ 
+                    document.getElementById("list").innerHTML = "";
+                }
+                socket.once("search",function(data){
                     console.log("ping");
                     console.log("data.length:"+ data.val.length);
-                    document.getElementById("list").innerHTML = "";
                     for(var i=0;i<data.val.length;i++){
                         let op = document.createElement("option");
                         op.value = data.val[i];  //value値
-                        console.log("id:" + op.value);
-                        op.text = data.val[i];   //テキスト値
-                        document.getElementById("list").appendChild(op);
+                        if(j == op.value){
+                            console.log("id:" + op.value);
+                            op.text = data.val[i];   //テキスト値
+                            document.getElementById("list").appendChild(op);
+                        }
                     }
                 });
+                setTimeout(function(){
+                    PING(j+1);
+                },50);
             }
 
             function ALLinput(){
@@ -143,7 +151,7 @@
             }
 
             $(function(){
-                $('[id=search]').click(PING);
+                $('[id=search]').click(function(){PING(1);});
                 $('[id=on]').click(servoON);
                 $('[id=off]').click(servoOFF);
                 $('[id=zero]').click(setOFFSET);
