@@ -14,6 +14,8 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
 
    - Node.js: 8.11.3 LTS
     [node-v8.11.3 sourc](https://nodejs.org/dist/v8.11.3/node-v8.11.3.tar.gz)からインストール
+     その他インストール方法もありますが、ここでは説明を省きます。
+     
    ``` 
    $ tar xzf node-v8.11.3.tar.gz
    $ cd node-v8.11.3
@@ -21,7 +23,6 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
    $ make
    $ sudo make install 
    ```
-   その他インストール方法もありますが、ここでは説明を省きます。
 
 ## パッケージのインストール
    ### dynamixel_checkerリポジトリのclone
@@ -37,6 +38,10 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
    - express
    - async
    
+   ```
+   $ npm install 
+   ```
+   または、
    ```
    $ sudo npm install -g --unsafe-perm --build-from-source
    ```
