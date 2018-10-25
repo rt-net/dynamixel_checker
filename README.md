@@ -122,9 +122,9 @@ $ sudo chmod a+rw /dev/ttyUSB0
 
 ## 注意事項
 
-### baudrate,IDの書き換えを行った場合、USBケーブルを抜いてデバイスの再接続を行ってください
+__baudrate,IDの書き換えを行った場合、USBケーブルを抜いてデバイスの再接続を行ってください__
 
-### 各種操作説明
+## 各種操作説明
 
 Operating Modeによって挙動が変わります。[Dynamixelのマニュアル](http://www.besttechnology.co.jp/modules/knowledge/?Dynamixel%20XM430-W350)を確認してください。
 
