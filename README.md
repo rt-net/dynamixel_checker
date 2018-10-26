@@ -23,6 +23,7 @@ ROBOTIS製Dymamixelサーボモータの内部パラメータ変更ソフト
 nodebrewを使ってNode.js: 8.11.3 LTSをインストールする方法は以下の通りです。
 
 ``` 
+$ sudo apt-get -y install curl
 $ curl -L git.io/nodebrew | perl - setup
 $ echo "export PATH=\$HOME/.nodebrew/current/bin:\$PATH" >> ~/.bashrc
 $ export PATH=$HOME/.nodebrew/current/bin:$PATH
