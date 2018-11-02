@@ -236,7 +236,7 @@
         </p>
         <p>
         Change Position:
-            <input type="range" name="range" min="-256" max="256" step="1" onchange="changeValue(this.value)">
+            <input type="range" name="range" min="-256" max="256" step="1" oninput="changeValue(this.value)">
                 <span id="val">0</span>
                     <script type="text/javascript">
                         function changeValue(value) {
