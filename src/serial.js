@@ -7,10 +7,14 @@ exports.setbaudRate = function(val){
     port = new SerialPort(dev, {
         baudRate:val
         });
-	if(port != null){
-		port_connect = 1;
-		console.log("port connect");
-	}
+    if(port != null){
+        port_connect = 1;
+        console.log("port connect");
+    }
+}
+
+exports.changeMode = function(){
+
 }
 
 exports.makedata = function(val){
@@ -196,16 +200,16 @@ function txPacket(txpacket)
 }
 
 function write(buf) {
-	console.log('write');
-	console.log(buf);
-	if(port_connect){
-		port.write( buf, function(err, results) {
-			if(err) {
-				console.log('Err: ' + err);
-				console.log('Results: ' + results);
-			}
-		});
-	}
+    console.log('write');
+    console.log(buf);
+    if(port_connect){
+        port.write( buf, function(err, results) {
+            if(err) {
+                console.log('Err: ' + err);
+                console.log('Results: ' + results);
+            }
+        });
+    }
 }
 
 exports.readRxPacket = function(ID, address, length, callback){
@@ -225,35 +229,35 @@ exports.readRxPacket = function(ID, address, length, callback){
 
 exports.rxPacket = function(length, callback)
 {
-	if(port_connect){
-		console.log('read');
-		port.once('data', function(input){
-			var inputdata = Buffer(input);
-			var dpacket = inputdata.length;
-			console.log('input:' + inputdata.toString('hex'));
+    if(port_connect){
+        console.log('read');
+        port.once('data', function(input){
+            var inputdata = Buffer(input);
+            var dpacket = inputdata.length;
+            console.log('input:' + inputdata.toString('hex'));
 
-			var val;
-			console.log("length:"+length);
-			switch(length){
-				case 0:
-					val = servo_list(inputdata);
-					callback(val);
-				break;
-				case 1:
-					val = inputdata[dpacket-3];
-					callback(val);
-				break;
-				case 2:
-					val = MAKEWORD(inputdata[dpacket-4],inputdata[dpacket-3]);
-					callback(val);
-				break;
-			case 4:
-					val = MAKEDWORD(MAKEWORD(inputdata[dpacket-6], inputdata[dpacket-5]), MAKEWORD(inputdata[dpacket-4], inputdata[dpacket-3]));
-					callback(val);
-				break;
-			}
-		});
-	}
+            var val;
+            console.log("length:"+length);
+            switch(length){
+                case 0:
+                    val = servo_list(inputdata);
+                    callback(val);
+                break;
+                case 1:
+                    val = inputdata[dpacket-3];
+                    callback(val);
+                break;
+                case 2:
+                    val = MAKEWORD(inputdata[dpacket-4],inputdata[dpacket-3]);
+                    callback(val);
+                break;
+                case 4:
+                    val = MAKEDWORD(MAKEWORD(inputdata[dpacket-6], inputdata[dpacket-5]), MAKEWORD(inputdata[dpacket-4], inputdata[dpacket-3]));
+                    callback(val);
+                break;
+            }
+        });
+    }
 }
 
 function servo_list(inputdata){
@@ -272,7 +276,7 @@ var length_list_ = [];
 var data_list_ = [];
 
 function bulkWriteTxOnly( param, param_length){
-    var txpacket = new Buffer(param_length + 10);
+    var txpacket = new Buffer(param_length+10);
 
     txpacket[4] = 254;
     txpacket[5] = LOBYTE(param_length + 3);
@@ -297,8 +301,6 @@ function makeParam(){
         var id = id_list_[i];
 
         param[idx++] = id;
-        console.log(param[idx-1]);
-        console.log("id:"+id);
         param[idx++] = LOBYTE(address_list_[id]);
         param[idx++] = HIBYTE(address_list_[id]);
         param[idx++] = LOBYTE(length_list_[id]);
