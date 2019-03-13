@@ -24,7 +24,7 @@ exports.makedata = function(val){
 
 exports.makepacket = function(val, len){
     var data = new Buffer(len);
-	console.log(val);
+    console.log(val);
     switch(len){
         case '1':
             data[0] = val;
