@@ -60,15 +60,15 @@ io.on('connection', function(socket){
                 serial.writeTxPacket(data.id, data.addr, Number(data.leng), Number(data.deg));
                 break;
             case "ping":
-            serial.setbaudRate(Number(data.deg));
-            setTimeout(function(){
-                console.log("ping");
-                serial.pingPacket(data.id);
-                serial.rxPacket(0, function(result){
-                    data = result;
-                    socket.emit("search",{val:data});
-                });
-            },2000);
+                serial.setbaudRate(Number(data.deg));
+                setTimeout(function(){
+                    console.log("ping");
+                    serial.pingPacket(data.id);
+                    serial.rxPacket(0, function(result){
+                        data = result;
+                        socket.emit("search",{val:data});
+                    });
+                },2000);
                 break;
             case "all":
                 var buf = new Buffer(1);
@@ -92,6 +92,16 @@ io.on('connection', function(socket){
             case "rate":
                 console.log(data.id);
                 serial.setbaudRate(Number(data.id));
+            case "mode":
+                var buf = new Buffer(1);
+                var addr = data.addr;
+                var len = data.leng+1;
+                var val = data.deg;
+                for(var id = data.id; id <= len;id++){
+                    serial.addParam(id, addr, 1, val);
+                }
+                serial.bulkwriteTxPacket();
+                break;
             default:
                 break;
         }
