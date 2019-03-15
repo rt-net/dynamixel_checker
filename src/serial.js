@@ -13,7 +13,8 @@ exports.makedata = function(val){
 }
 
 exports.makepacket = function(val, len){
-    var data = new Buffer(len);
+    // var data = new Buffer(len);
+    var data = Buffer.alloc(len);
 	console.log(val);
     switch(len){
         case '1':
@@ -130,8 +131,10 @@ function value2deg(value)
 }
 
 exports.pingPacket = function(ID){
-    var txpacket = new Buffer(10);
-    var rxpacket = new Buffer(14);
+    // var txpacket = new Buffer(10);
+    // var rxpacket = new Buffer(14);
+    var txpacket = Buffer.alloc(10);
+    var rxpacket = Buffer.alloc(14);
 
     txpacket[4] = ID;
     txpacket[5] = 0x03;
@@ -143,8 +146,10 @@ exports.pingPacket = function(ID){
 
 exports.writeTxPacket = function(ID, address, length, val){
     var total_packet = 12 + length;
-    var txpacket = Buffer(total_packet);
-    var data = Buffer(length);
+    // var txpacket = Buffer(total_packet);
+    // var data = Buffer(length);
+    var txpacket = Buffer.alloc(total_packet);
+    var data = Buffer.alloc(length);
     console.log(val);
     switch(length){
         case 1:
@@ -219,7 +224,8 @@ exports.rxPacket = function(length, callback)
 {
     console.log('read');
     port.once('data', function(input){
-        var inputdata = Buffer(input);
+        // var inputdata = Buffer(input);
+        var inputdata = Buffer.from(input);
         var dpacket = inputdata.length;
         console.log('input:' + inputdata.toString('hex'));
 
@@ -262,7 +268,8 @@ var length_list_ = [];
 var data_list_ = [];
 
 function bulkWriteTxOnly( param, param_length){
-    var txpacket = new Buffer(param_length + 10);
+    // var txpacket = new Buffer(param_length + 10);
+    var txpacket = Buffer.alloc(param_length + 10);
 
     txpacket[4] = 254;
     txpacket[5] = LOBYTE(param_length + 3);
@@ -280,7 +287,8 @@ function makeParam(){
     for(var i=0; i<id_list_.length; i++)
         param_length += 1 + 2 + 2 + length_list_[id_list_[i]];
 
-    var param = new Buffer(param_length);
+    // var param = new Buffer(param_length);
+    var param = Buffer.alloc(param_length);
 
     var idx = 0;
     for(var i=0; i<id_list_.length; i++){
