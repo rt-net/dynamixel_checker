@@ -140,7 +140,11 @@ Operating Modeによって挙動が変わります。[Dynamixelのマニュア�
 
 ### Reference Position
 
-ボタンを押すことで、サーボの原点に移動します。
+ボタンを押すことで、サーボの原点に移動します。  
+
+### Change all Operating Mode
+
+一連で繋がっているサーボの`operating mode`を一括で変更できる。
 
 ### Table
 
