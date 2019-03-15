@@ -231,10 +231,9 @@ exports.rxPacket = function(length, callback)
             var inputdata = Buffer.from(input);
             var dpacket = inputdata.length;
             console.log('input:' + inputdata.toString('hex'));
-
-                var val;
-                console.log("length:"+length);
-                switch(length){
+            var val;
+            console.log("length:"+length);
+            switch(length){
                 case 0:
                     val = servo_list(inputdata);
                     callback(val);
@@ -297,8 +296,6 @@ function makeParam(){
         var id = id_list_[i];
 
         param[idx++] = id;
-        console.log(param[idx-1]);
-        console.log("id:"+id);
         param[idx++] = LOBYTE(address_list_[id]);
         param[idx++] = HIBYTE(address_list_[id]);
         param[idx++] = LOBYTE(length_list_[id]);

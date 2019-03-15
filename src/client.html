@@ -141,6 +141,13 @@
                     ALLread(i+1);
                 },50);
             }
+            function ChangeMode(){
+                var str = $('#list').children(0).val();
+                var val = $('[id=mode]').val();
+                var len = $('#list').children().length;
+                var addr = 11;
+                WriteCommand(str,"mode",addr,len,val);
+            }
 
             $(function(){
                 $('[id=search]').click(PING);
@@ -150,6 +157,7 @@
                 $('[id=get]').click(getPOSE);
                 $('[id=write]').click(WRITE);
                 $('[id=setrate]').click(setRate);
+                $('[id=change]').click(ChangeMode);
                 $('table#csv').on('click','[id=set]',SET);
                 $('table#csv').on('click','[id=all]',ALLinput);
                 $('table#csv').on('click','[id=allread]',function(){ALLread(0);});
@@ -246,6 +254,18 @@
         </p>
         <p>
             Reference Position: <button id="zero">Move</button>
+        </p>
+        <p>
+            Change all Operating Mode : 
+            <select id="mode">
+                <option value='0'>0:Current Control</option>
+                <option value='1'>1:Velocity Control</option>
+                <option value='3'>3:Position Control</option>
+                <option value='4'>4:Extended Position Control</option>
+                <option value='5'>5:Current-Base Position Control</option>
+                <option value='16'>16:PWM Control</option>
+            </select>
+            <button id="change">change</button>
         </p>
         <p>
         <table id="csv" class="csv" border="1"></table>
