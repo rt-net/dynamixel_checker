@@ -89,7 +89,7 @@ $ npm start
 
 ブラウザを開いて [`http://localhost:8080/`](http://localhost:8080/) にアクセス、又はターミナル画面の[`http://localhost:8080/`](http://localhost:8080/)を右クリックするとDynamixel Checkerが起動します。
 
-![screenshot from 2018-07-20 17-28-41](https://user-images.githubusercontent.com/12367951/42992244-f39f4cee-8c42-11e8-8929-bc0b1d83ccca.png)
+![Screenshot from 2019-03-13 18-32-52](https://user-images.githubusercontent.com/12367951/54403729-7b982f80-4714-11e9-826e-ae249a8d19a6.png)
 
 ## 使用方法
 
