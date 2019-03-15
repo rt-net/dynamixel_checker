@@ -1,10 +1,16 @@
 var SerialPort = require('serialport');
 
+var port_connect = 0;
+
 exports.setbaudRate = function(val){
     dev='/dev/ttyUSB0';
     port = new SerialPort(dev, {
         baudRate:val
         });
+    if(port != null){
+        port_connect = 1;
+        console.log("port connect");
+    }
 }
 
 exports.makedata = function(val){
@@ -13,9 +19,8 @@ exports.makedata = function(val){
 }
 
 exports.makepacket = function(val, len){
-    // var data = new Buffer(len);
     var data = Buffer.alloc(len);
-	console.log(val);
+    console.log(val);
     switch(len){
         case '1':
             data[0] = val;
@@ -122,7 +127,7 @@ function MAKEDWORD(a,b)
 
 function deg2value(deg)
 {
-	return (180 + deg) * 4096 / 360;
+    return (180 + deg) * 4096 / 360;
 }
 
 function value2deg(value)
@@ -131,8 +136,6 @@ function value2deg(value)
 }
 
 exports.pingPacket = function(ID){
-    // var txpacket = new Buffer(10);
-    // var rxpacket = new Buffer(14);
     var txpacket = Buffer.alloc(10);
     var rxpacket = Buffer.alloc(14);
 
@@ -146,8 +149,6 @@ exports.pingPacket = function(ID){
 
 exports.writeTxPacket = function(ID, address, length, val){
     var total_packet = 12 + length;
-    // var txpacket = Buffer(total_packet);
-    // var data = Buffer(length);
     var txpacket = Buffer.alloc(total_packet);
     var data = Buffer.alloc(length);
     console.log(val);
@@ -197,12 +198,14 @@ function txPacket(txpacket)
 function write(buf) {
     console.log('write');
     console.log(buf);
-    port.write( buf, function(err, results) {
-        if(err) {
-            console.log('Err: ' + err);
-            console.log('Results: ' + results);
-        }
-    });
+    if(port_connect){
+        port.write( buf, function(err, results) {
+            if(err) {
+                console.log('Err: ' + err);
+                console.log('Results: ' + results);
+            }
+        });
+    }
 }
 
 exports.readRxPacket = function(ID, address, length, callback){
@@ -222,34 +225,35 @@ exports.readRxPacket = function(ID, address, length, callback){
 
 exports.rxPacket = function(length, callback)
 {
-    console.log('read');
-    port.once('data', function(input){
-        // var inputdata = Buffer(input);
-        var inputdata = Buffer.from(input);
-        var dpacket = inputdata.length;
-        console.log('input:' + inputdata.toString('hex'));
+    if(port_connect){
+        console.log('read');
+        port.once('data', function(input){
+            var inputdata = Buffer.from(input);
+            var dpacket = inputdata.length;
+            console.log('input:' + inputdata.toString('hex'));
 
-        var val;
-        console.log("length:"+length);
-        switch(length){
-            case 0:
-                val = servo_list(inputdata);
-                callback(val);
-                break;
-            case 1:
-                val = inputdata[dpacket-3];
-                callback(val);
-                break;
-            case 2:
-                val = MAKEWORD(inputdata[dpacket-4],inputdata[dpacket-3]);
-                callback(val);
-                break;
-            case 4:
-                val = MAKEDWORD(MAKEWORD(inputdata[dpacket-6], inputdata[dpacket-5]), MAKEWORD(inputdata[dpacket-4], inputdata[dpacket-3]));
-                callback(val);
-                break;
-        }
-    });
+                var val;
+                console.log("length:"+length);
+                switch(length){
+                case 0:
+                    val = servo_list(inputdata);
+                    callback(val);
+                    break;
+                case 1:
+                    val = inputdata[dpacket-3];
+                    callback(val);
+                    break;
+                case 2:
+                    val = MAKEWORD(inputdata[dpacket-4],inputdata[dpacket-3]);
+                    callback(val);
+                    break;
+                case 4:
+                    val = MAKEDWORD(MAKEWORD(inputdata[dpacket-6], inputdata[dpacket-5]), MAKEWORD(inputdata[dpacket-4], inputdata[dpacket-3]));
+                    callback(val);
+                    break;
+            }
+        });
+    }
 }
 
 function servo_list(inputdata){
@@ -268,7 +272,6 @@ var length_list_ = [];
 var data_list_ = [];
 
 function bulkWriteTxOnly( param, param_length){
-    // var txpacket = new Buffer(param_length + 10);
     var txpacket = Buffer.alloc(param_length + 10);
 
     txpacket[4] = 254;
@@ -287,7 +290,6 @@ function makeParam(){
     for(var i=0; i<id_list_.length; i++)
         param_length += 1 + 2 + 2 + length_list_[id_list_[i]];
 
-    // var param = new Buffer(param_length);
     var param = Buffer.alloc(param_length);
 
     var idx = 0;
